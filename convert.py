@@ -1,18 +1,18 @@
 import re
 import pyperclip
 
-## Get the copied content from the clipboard
-#copied_content = pyperclip.paste()
+# Get the copied content from the clipboard
+# copied_content = pyperclip.paste()
 #
-##link=input('Enter the link')
+# link=input('Enter the link')
 #
 #
-## Use a regular expression to check if the content matches the link format
-#match = re.search(r'https://item\.taobao\.com/item\.htm\?spm=.+?&id=(\d+)', copied_content)
-##match = re.search(r'https://item\.taobao\.com/item\.htm\?spm=.+?&id=(\d+)', link)
+# Use a regular expression to check if the content matches the link format
+# match = re.search(r'https://item\.taobao\.com/item\.htm\?spm=.+?&id=(\d+)', copied_content)
+# match = re.search(r'https://item\.taobao\.com/item\.htm\?spm=.+?&id=(\d+)', link)
 #
-## If there's a match, extract the ID and create the new link
-#if match:
+# If there's a match, extract the ID and create the new link
+# if match:
 #    id = match.group(1)
 #    new_link = f'https://item.taobao.com/item.htm?id={id}'
 #
@@ -20,25 +20,29 @@ import pyperclip
 #    pyperclip.copy(new_link)
 #    #print(new_link)
 
-#regex for Taobao link
-taobao_regex = r'https://item.taobao.com/item.htm\?spm=.+&id=(\d+).*'
+# regex for Taobao link
+taobao_regex = r"https://item.taobao.com/item.htm\?spm=.+&id=(\d+).*"
 
-#regex for Tmall link
-tmall_regex = r'https://detail.tmall.com/item.htm\?.+&id=(\d+).*'
+# regex for Tmall link
+tmall_regex = r"https://detail.tmall.com/item.htm\?.+&id=(\d+).*"
 
-#regex for Taobao shop link
+# regex for Taobao shop link
 shop_regex = r"https://[a-zA-Z0-9-]+\.(taobao\.com)/\?.*"
+shop_pattern = r"https://(.*).taobao.com/shop/view_shop.htm\?spm=(.*)"
+
+# regex for Tmall shop link
+tmall_pattern = r"https://(.*).tmall.com/shop/view_shop.htm"
 
 clipboard_content = pyperclip.paste()
 
-#if the clipboard contains a Taobao link
+# if the clipboard contains a Taobao link
 match = re.match(taobao_regex, clipboard_content)
 if match:
     item_id = match.group(1)
     new_link = f"https://item.taobao.com/item.htm?id={item_id}"
     pyperclip.copy(new_link)
 
-#if the clipboard contains a Tmall link
+# if the clipboard contains a Tmall link
 match = re.match(tmall_regex, clipboard_content)
 if match:
     item_id = match.group(1)
@@ -47,5 +51,17 @@ if match:
 
 match = re.match(shop_regex, clipboard_content)
 if match:
-    new_url = re.sub(r'\?.*$', '', clipboard_content)
+    new_url = re.sub(r"\?.*$", "", clipboard_content)
     pyperclip.copy(new_url)
+
+match = re.match(shop_pattern, clipboard_content)
+if match:
+    replace_str = r"https://\1.taobao.com/"
+    converted_url = re.sub(shop_pattern, replace_str, clipboard_content)
+    pyperclip.copy(converted_url)
+
+match = re.match(tmall_pattern, clipboard_content)
+if match:
+    replace_str = r"https://\1.tmall.com/"
+    converted_url = re.sub(tmall_pattern, replace_str, clipboard_content)
+    pyperclip.copy(converted_url)
