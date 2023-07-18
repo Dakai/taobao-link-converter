@@ -1,12 +1,9 @@
 [Unit]
 Description=Clipboard Sharing Service
-After=network.target
 
 [Service]
-Type=simple
-ExecStart=/home/dakai/Apps/taobao-link-converter/monitor.sh
-Restart=on-failure
 Environment=XDG_RUNTIME_DIR=/run/user/1000
+ExecStart=/home/dakai/Apps/taobao-link-converter/monitor.sh
 
 [Install]
 WantedBy=multi-user.target
